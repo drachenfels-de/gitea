@@ -91,7 +91,6 @@ func ListPullRequests(ctx *context.APIContext) {
 		Labels:      ctx.QueryStrings("labels"),
 		MilestoneID: ctx.QueryInt64("milestone"),
 	})
-
 	if err != nil {
 		ctx.Error(http.StatusInternalServerError, "PullRequests", err)
 		return
@@ -972,12 +971,14 @@ func parseCompareInfo(ctx *context.APIContext, form api.CreatePullRequestOption)
 	}
 
 	// Check if current user has fork of repository or in the same repository.
-	headRepo, has := models.HasForkedRepo(headUser.ID, baseRepo.ID)
-	if !has && !isSameRepo {
-		log.Trace("parseCompareInfo[%d]: does not have fork or in same repository", baseRepo.ID)
-		ctx.NotFound("HasForkedRepo")
-		return nil, nil, nil, nil, "", ""
-	}
+	/*
+		headRepo, has := models.HasForkedRepo(headUser.ID, baseRepo.ID)
+		if !has && !isSameRepo {
+			log.Trace("parseCompareInfo[%d]: does not have fork or in same repository", baseRepo.ID)
+			ctx.NotFound("HasForkedRepo")
+			return nil, nil, nil, nil, "", ""
+		}
+	*/
 
 	var headGitRepo *git.Repository
 	if isSameRepo {
